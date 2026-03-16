@@ -11,6 +11,3 @@ then run:
 stringIC("TEXT")
 subseqIC("CIPHERTEXT", keylen)
 keyLengthIC("CIPHERTEXT", n)
-
-Problem 5:
-open Problem5.pdf
