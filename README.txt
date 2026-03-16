@@ -1,20 +1,16 @@
 How to use:
 
 p1:
-import a7p1
-call antiKasiski(key, plaintext)
+python3 -i a7p1.py
+then run:
+antiKasiski("KEY", "PLAINTEXT")
 
-p2:
-import a7p234
-call stringIC(text)
-
-p3:
-import a7p234
-call subseqIC(ciphertext, keylen)
-
-p4:
-import a7p234
-call keyLengthIC(ciphertext, n)
+p2-p4:
+python3 -i a7p234.py
+then run:
+stringIC("TEXT")
+subseqIC("CIPHERTEXT", keylen)
+keyLengthIC("CIPHERTEXT", n)
 
 Problem 5:
 open Problem5.pdf
