@@ -4,7 +4,7 @@
 #
 # CMPUT 331 Student Submission License
 # Version 1.0
-# Copyright 2026 <<Insert your name here>>
+# Copyright 2026 Louis Lam
 #
 # Redistribution is forbidden in all circumstances. Use of this software
 # without explicit authorization from the author is prohibited.
@@ -41,7 +41,38 @@ def antiKasiski(key: str, plaintext: str) -> str:
     """
     Thwart Kasiski examination 
     """
-    raise NotImplementedError()
+    current = plaintext
+    start_index = 0
+
+    while True:
+        # Encrypt current plaintext with Vigenere
+        ciphertext = ""
+        for i in range(len(current)):
+            p = ord(current[i]) - ord('A')
+            k = ord(key[i % len(key)]) - ord('A')
+            c = (p + k) % 26
+            ciphertext += chr(c + ord('A'))
+
+        # Find earliest repeated trigram whose first occurrence
+        # starts at or after start_index
+        repeat_index = -1
+        for i in range(start_index, len(ciphertext) - 2):
+            trigram = ciphertext[i:i + 3]
+            if ciphertext.find(trigram, i + 1) != -1:
+                repeat_index = i
+                break
+
+        # If none found, we are done
+        if repeat_index == -1:
+            return ciphertext
+
+        # Insert X immediately after first occurrence of that trigram
+        insert_pos = repeat_index + 3
+        current = current[:insert_pos] + 'X' + current[insert_pos:]
+
+        # do not later insert for repeated subsequences whose first
+        # occurrence starts before this index
+        start_index = repeat_index
 
 
 def test():
