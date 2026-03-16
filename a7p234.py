@@ -4,7 +4,7 @@
 #
 # CMPUT 331 Student Submission License
 # Version 1.0
-# Copyright 2026 <<Insert your name here>>
+# Copyright 2026 Louis Lam
 #
 # Redistribution is forbidden in all circumstances. Use of this software
 # without explicit authorization from the author is prohibited.
@@ -42,7 +42,17 @@ def stringIC(text: str) -> float:
     """
     Compute the index of coincidence (IC) for text
     """
-    raise NotImplementedError()
+    N = len(text)
+
+    if N < 2:
+        return 0.0
+
+    total = 0
+    for ch in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+        count = text.count(ch)
+        total += count * (count - 1)
+
+    return total / (N * (N - 1))
 
 
 def subseqIC(ciphertext: str, keylen: int) -> float:
@@ -50,7 +60,13 @@ def subseqIC(ciphertext: str, keylen: int) -> float:
     Return the average IC of ciphertext for 
     subsequences induced by a given a key length
     """
-    raise NotImplementedError()
+    total_ic = 0
+
+    for i in range(1, keylen + 1):
+        subseq = getNthSubkeysLetters(i, keylen, ciphertext)
+        total_ic += stringIC(subseq)
+
+    return total_ic / keylen
 
 
 def keyLengthIC(ciphertext: str, n: int) -> list:
@@ -58,8 +74,19 @@ def keyLengthIC(ciphertext: str, n: int) -> list:
     Return the top n keylengths ordered by likelihood of correctness
     Assumes keylength <= 20
     """
-    raise NotImplementedError()
+    scores = []
 
+    for keylen in range(1, 21):
+        avg_ic = subseqIC(ciphertext, keylen)
+        scores.append((avg_ic, keylen))
+
+    scores.sort(key=lambda x: (-x[0], x[1]))
+
+    result = []
+    for i in range(n):
+        result.append(scores[i][1])
+
+    return result
 
 def getNthSubkeysLetters(nth: int, keyLength: int, message: str):
     # Returns every nth letter for each keyLength set of letters in text.
