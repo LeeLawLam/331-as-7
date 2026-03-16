@@ -45,7 +45,6 @@ def antiKasiski(key: str, plaintext: str) -> str:
     start_index = 0
 
     while True:
-        # Encrypt current plaintext with Vigenere
         ciphertext = ""
         for i in range(len(current)):
             p = ord(current[i]) - ord('A')
@@ -53,8 +52,6 @@ def antiKasiski(key: str, plaintext: str) -> str:
             c = (p + k) % 26
             ciphertext += chr(c + ord('A'))
 
-        # Find earliest repeated trigram whose first occurrence
-        # starts at or after start_index
         repeat_index = -1
         for i in range(start_index, len(ciphertext) - 2):
             trigram = ciphertext[i:i + 3]
@@ -62,16 +59,11 @@ def antiKasiski(key: str, plaintext: str) -> str:
                 repeat_index = i
                 break
 
-        # If none found, we are done
         if repeat_index == -1:
             return ciphertext
 
-        # Insert X immediately after first occurrence of that trigram
         insert_pos = repeat_index + 3
         current = current[:insert_pos] + 'X' + current[insert_pos:]
-
-        # do not later insert for repeated subsequences whose first
-        # occurrence starts before this index
         start_index = repeat_index
 
 
